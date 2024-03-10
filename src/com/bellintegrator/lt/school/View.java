@@ -6,29 +6,32 @@ public class View {
     Scanner scanner = new Scanner(System.in);
 
     public int inputINTValue(String string) {
-        int result = 0;
+        int result;
         System.out.print(string);
         result = scanner.nextInt(); // TODO: проверка что введенное число является целым
+        scanner.nextLine();
         return result;
     }
 
-//    public String[] inputRowArray() {
-//        System.out.println("Введите символы через пробел");
-//        while (scanner.hasNextLine()) {
-//            String readRow = scanner.nextLine();
-//            String[] arraySymbols = readRow.split(" ");
-//            return arraySymbols;
-//        }
-//        return null;
-//    }
+    public String[] inputRowArray(int i) {
+
+        System.out.printf("Введите символы через пробел\nСтрока - %2d\n", i);
+        String readRow = scanner.nextLine();
+        String[] arraySymbols = readRow.split(" ");
+        return arraySymbols;
+    }
 
     // Для вывода на экран
     public void print2DArray(String[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.printf("%2s", array[i][j]);
+        for (String[] strings : array) {
+            for (String string : strings) {
+                System.out.printf("%2s", string);
             }
             System.out.println();
         }
+    }
+
+    public void printText(String str) {
+        System.out.println(str);
     }
 }

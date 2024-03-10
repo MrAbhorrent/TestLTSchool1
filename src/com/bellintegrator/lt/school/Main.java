@@ -1,41 +1,21 @@
 package com.bellintegrator.lt.school;
 
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
         int N, M;
         View view = new View();
         // Создание матрицы N x M (ограничение 1 <= N <= 100, 1 <= M <= 100)
-        N = checkInputValue(view);
-        M = checkInputValue(view);
+        N = checkInputValue(view, "Введите количество строк: ");
+        M = checkInputValue(view, "Введите количество столбцов: ");
         String[][] array = new String[N][M];
-        //fillTestArray(array, view);
-        array = fillTestArrayMock();
+        fillTestArray(view, array);
+        //String[][] array = MockArray.fillTestArrayMock();  // Вариант проверки 1
+        //String[][] array = MockArray.fillTestArrayMock2(); // Вариант проверки 2
         findClearPositionsInArray(array);
-        System.out.println("OUTPUT");
+        view.printText("OUTPUT");
         view.print2DArray(array);
-        System.out.printf("\nКоличество способов = %2d", findClearPositionsInArray(array));
-    }
-
-    private static String[][] fillTestArrayMock() {
-        return new String[][] {
-                {"*","*","*","*"},
-                {"*","*","-","-"},
-                {"*","-","-","-"},
-                {"*","-","-","-"},
-        };
-    }
-
-    private static String[][] fillTestArrayMock2() {
-        return new String[][] {
-                {"*","*","*","*","*"},
-                {"*","-","-","-","*"},
-                {"*","-","-","-","*"},
-                {"*","-","-","-","*"},
-                {"*","*","*","*","*"},
-        };
+        view.printText(String.format("\nКоличество способов = %2d", findClearPositionsInArray(array)));
     }
 
     private static int findClearPositionsInArray(String[][] array) {
@@ -53,7 +33,6 @@ public class Main {
     }
 
     private static boolean checkPosition(String[][] array, int i, int j) {
-        boolean result = false;
         if (i == 0) {
             if (j == 0) {
                 return array [i + 1][j].equals("-")
@@ -95,30 +74,26 @@ public class Main {
                 && array[i][j + 1].equals("-"));
     }
 
-    private static void fillTestArray(String[][] array, View _view) {
+    private static void fillTestArray(View view, String[][] array) {
         for (int i = 0; i < array.length; i++) {
-            Scanner scanner = new Scanner(System.in);
-            String readRow = scanner.nextLine();
-            String[] arraySymbols = readRow.split(" ");
-            for (int j = 0; j < array[i].length; j++) {
-                array[i][j] = arraySymbols[j];
-            }
+            String[] strings = array[i];
+            String[] arraySymbols = view.inputRowArray(i);
+            System.arraycopy(arraySymbols, 0, strings, 0, strings.length);
         }
     }
 
-    private static int checkInputValue(View view) {
+    private static int checkInputValue(View view, String str) {
         int result;
+        int minValue = 1;
+        int maxValue = 100;
         while (true) {
-            result = view.inputINTValue("Введите количество строк: ");
-            if ( result >= 1 && result <= 100) {
+            result = view.inputINTValue(str);
+            if ( result >= minValue && result <= maxValue) {
                 break;
             } else {
-                System.out.println("Число должно быть в диапазоне от 1 до 100");
+                view.printText(String.format("Число должно быть в диапазоне от %3d до %3d\n", minValue, maxValue));
             }
         }
         return result;
     }
-
-
-
 }
